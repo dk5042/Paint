@@ -22,6 +22,7 @@ namespace Paint
     public partial class MainWindow : Window
     {
         Point currentPoint = new Point();
+        Point? lineStart = null;
         int drawStyle = 1;
 
         Color selectedColor = Color.FromRgb(0,0,0);
@@ -43,7 +44,7 @@ namespace Paint
 
         private void btnLine_Click(object sender, RoutedEventArgs e)
         {
-
+            drawStyle = 3;
         }
 
         private void paintSurface_MouseMove(object sender, MouseEventArgs e)
@@ -87,6 +88,24 @@ namespace Paint
                         ellipse.Fill = new SolidColorBrush(selectedColor);
                         paintSurface.Children.Add(ellipse);
 
+                        break;
+                    case 3:
+                        if (lineStart is null)
+                            lineStart = e.GetPosition(this);
+                        else
+                        {
+                                Point start = (Point)lineStart;
+                                Line lineLong = new Line();
+                                lineLong.Stroke = new SolidColorBrush(selectedColor);
+                                lineLong.X1 = start.X - mainWindow.Width / 5;
+                                lineLong.Y1 = start.Y;
+                                lineLong.X2 = e.GetPosition(this).X - mainWindow.Width / 5;
+                                lineLong.Y2 = e.GetPosition(this).Y;
+                                lineLong.MouseLeftButtonDown += Line_MouseLeftButtonDown;
+                                paintSurface.Children.Add(lineLong);
+                                lineStart = null;
+
+                        }
                         break;
                     case 7:
                         Rectangle rect = new Rectangle();
