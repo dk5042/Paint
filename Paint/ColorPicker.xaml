@@ -3,18 +3,80 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
-        Title="ColorPicker" Height="450" Width="800">
+        Title="Color Picker" Height="350" Width="250">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="15*"/>
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabControl_SelectionChanged">
+            <!-- RGB Tab -->
+            <TabItem x:Name="tab_rgb" Header="RGB">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-        <Label Content="Wybierz kolor: " HorizontalAlignment="Left" Margin="240,10,0,0" VerticalAlignment="Top" Grid.Column="1" />
-        <TextBox x:Name="tbRValue" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="337,116,0,0" Text="00" TextWrapping="Wrap" />
-        <TextBox x:Name="tbGValue" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="337,146,0,0" Text="00" TextWrapping="Wrap" />
-        <TextBox x:Name="tbBValue" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="337,176,0,0" Text="00" TextWrapping="Wrap" />
+                    <Label Content="R:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tbRValue" Grid.Row="0" Grid.Column="1" Width="50" Text="0" KeyDown="OnRGBColorValueChanged" PreviewMouseUp="SelectAllText" />
+
+                    <Label Content="G:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tbGValue" Grid.Row="1" Grid.Column="1" Width="50" Text="0" KeyDown="OnRGBColorValueChanged" PreviewMouseUp="SelectAllText" />
+
+                    <Label Content="B:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tbBValue" Grid.Row="2" Grid.Column="1" Width="50" Text="0" KeyDown="OnRGBColorValueChanged" PreviewMouseUp="SelectAllText" />
+
+                </Grid>
+            </TabItem>
+
+            <!-- HSV Tab -->
+            <TabItem x:Name="tab_hsv" Header="HSV">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="H:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tbHValue" Grid.Row="0" Grid.Column="1" Width="50" Text="0" KeyDown="OnHSVColorValueChanged" PreviewMouseUp="SelectAllText" />
+
+                    <Label Content="S:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tbSValue" Grid.Row="1" Grid.Column="1" Width="50" Text="0" KeyDown="OnHSVColorValueChanged" PreviewMouseUp="SelectAllText" />
+
+                    <Label Content="V:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="tbVValue" Grid.Row="2" Grid.Column="1" Width="50" Text="0" KeyDown="OnHSVColorValueChanged" PreviewMouseUp="SelectAllText" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle x:Name="rectColorView" Grid.Column="0" Height="75" Width="75" Margin="0,24,0,24" Fill="Black" />
+
+            <Button x:Name="btnUpdateColor" Grid.Column="1" Content="Sprawdź kolor" Height="40" Margin="12" Click="btnUpdateColor_Click" />
+        </Grid>
+
+        <Button x:Name="btnPickColor" Grid.Row="2" Height="30" Content="Wybierz kolor" Click="btnPickColor_Click" />
+        
     </Grid>
 </Window>

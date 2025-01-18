@@ -22,10 +22,13 @@ namespace Paint
     public partial class MainWindow : Window
     {
         Point currentPoint = new Point();
-        Point? lineStart = null;
         int drawStyle = 1;
 
-        Color selectedColor = Color.FromRgb(0,0,0);
+        public Color selectedColor = Color.FromRgb(0,0,0);
+
+        private Line _currentLine;
+        private Ellipse _startHandle, _endHandle;
+        private bool _isDraggingStart, _isDraggingEnd;
 
         public MainWindow()
         {
@@ -65,6 +68,25 @@ namespace Paint
                         paintSurface.Children.Add(line);
 
                         break;
+
+                    case 3:
+                        if (_currentLine == null) return;
+
+                        Point currentPosition = e.GetPosition(paintSurface);
+
+                        if (_isDraggingStart)
+                        {
+                            UpdateHandlePosition(_startHandle, currentPosition);
+                            _currentLine.X1 = currentPosition.X;
+                            _currentLine.Y1 = currentPosition.Y;
+                        }
+                        else if (_isDraggingEnd)
+                        {
+                            UpdateHandlePosition(_endHandle, currentPosition);
+                            _currentLine.X2 = currentPosition.X;
+                            _currentLine.Y2 = currentPosition.Y;
+                        }
+                        break;
                 }
             }
         }
@@ -90,23 +112,44 @@ namespace Paint
 
                         break;
                     case 3:
-                        if (lineStart is null)
-                            lineStart = e.GetPosition(this);
+                        Point clickPosition = e.GetPosition(paintSurface);
+
+                        if (_currentLine == null)
+                        {
+                            _currentLine = new Line
+                            {
+                                Stroke = new SolidColorBrush(selectedColor),
+                                X1 = clickPosition.X,
+                                Y1 = clickPosition.Y,
+                                X2 = clickPosition.X,
+                                Y2 = clickPosition.Y
+                            };
+
+                            paintSurface.Children.Add(_currentLine);
+
+                            _startHandle = CreateHandle(clickPosition);
+                            _endHandle = CreateHandle(clickPosition);
+
+                            paintSurface.Children.Add(_startHandle);
+                            paintSurface.Children.Add(_endHandle);
+                        }
                         else
                         {
-                                Point start = (Point)lineStart;
-                                Line lineLong = new Line();
-                                lineLong.Stroke = new SolidColorBrush(selectedColor);
-                                lineLong.X1 = start.X - mainWindow.Width / 5;
-                                lineLong.Y1 = start.Y;
-                                lineLong.X2 = e.GetPosition(this).X - mainWindow.Width / 5;
-                                lineLong.Y2 = e.GetPosition(this).Y;
-                                lineLong.MouseLeftButtonDown += Line_MouseLeftButtonDown;
-                                paintSurface.Children.Add(lineLong);
-                                lineStart = null;
-
+                            if (IsMouseOverHandle(_startHandle, clickPosition))
+                            {
+                                _isDraggingStart = true;
+                            }
+                            else if (IsMouseOverHandle(_endHandle, clickPosition))
+                            {
+                                _isDraggingEnd = true;
+                            }
+                            else
+                            {
+                                FinalizeLine();
+                            }
                         }
                         break;
+
                     case 7:
                         Rectangle rect = new Rectangle();
 
@@ -122,6 +165,7 @@ namespace Paint
                         paintSurface.Children.Add(rect);
 
                         break;
+
                     case 8:
                         Polygon poly = new Polygon();
 
@@ -152,6 +196,12 @@ namespace Paint
                         break;
                 }
             }
+        }
+
+        private void paintSurface_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isDraggingStart = false;
+            _isDraggingEnd = false;
         }
 
         private void paintSurface_MouseDown(object sender, MouseButtonEventArgs e)
@@ -197,6 +247,55 @@ namespace Paint
                 
 
             }
+        }
+
+        // Line creation and edition logic
+
+        private Ellipse CreateHandle(Point position)
+        {
+            var handle = new Ellipse
+            {
+                Width = 10,
+                Height = 10,
+                Fill = Brushes.Red,
+                Opacity = 0.4,
+            };
+            UpdateHandlePosition(handle, position);
+            return handle;
+        }
+
+        private void UpdateHandlePosition(Ellipse handle, Point position)
+        {
+            Canvas.SetLeft(handle, position.X - handle.Width / 2);
+            Canvas.SetTop(handle, position.Y - handle.Height / 2);
+        }
+
+        private bool IsMouseOverHandle(Ellipse handle, Point mousePosition)
+        {
+            double left = Canvas.GetLeft(handle);
+            double top = Canvas.GetTop(handle);
+
+            return mousePosition.X >= left &&
+                   mousePosition.X <= left + handle.Width &&
+                   mousePosition.Y >= top &&
+                   mousePosition.Y <= top + handle.Height;
+        }
+
+        private void FinalizeLine()
+        {
+            if (_startHandle != null)
+            {
+                paintSurface.Children.Remove(_startHandle);
+                _startHandle = null;
+            }
+
+            if (_endHandle != null)
+            {
+                paintSurface.Children.Remove(_endHandle);
+                _endHandle = null;
+            }
+
+            _currentLine = null;
         }
     }
 }
