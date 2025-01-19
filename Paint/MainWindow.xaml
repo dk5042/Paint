@@ -24,7 +24,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <ToolBarPanel Grid.Row="0">
+            <ToolBarPanel Grid.Row="0" Margin="8">
                 <StackPanel Orientation="Vertical">
                     <ToolBar ToolBarTray.IsLocked="True">
                         <Menu ToolBar.OverflowMode="Never" Background="AliceBlue">
@@ -32,15 +32,6 @@
                                 <MenuItem x:Name="btnDraw" Header="Dowolnie" Click="btnDraw_Click"/>
                                 <MenuItem x:Name="btnPoint" Header="Punkty" Click="btnPoint_Click"/>
                                 <MenuItem x:Name="btnLine" Header="Linie" Click="btnLine_Click"/>
-                            </MenuItem>
-                        </Menu>
-                    </ToolBar>
-
-                    <ToolBar ToolBarTray.IsLocked="True">
-                        <Menu>
-                            <MenuItem Header="Odcinki" Background="AliceBlue">
-                                <MenuItem x:Name="drawSegment" Header="Rysuj odcinek" Click="drawSegment_Click" />
-                                <MenuItem x:Name="editSegment" Header="Edytuj odcinek" Click="editSegment_Click" />
                             </MenuItem>
                         </Menu>
                     </ToolBar>

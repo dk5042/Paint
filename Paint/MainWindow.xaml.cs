@@ -21,6 +21,7 @@ namespace Paint
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Image loadedImage = new Image();
         Point currentPoint = new Point();
         int drawStyle = 1;
 
@@ -209,16 +210,6 @@ namespace Paint
            
         }
 
-        private void drawSegment_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void editSegment_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void drawRectangle_Click(object sender, RoutedEventArgs e)
         {
             drawStyle = 7;
@@ -244,9 +235,15 @@ namespace Paint
             if (openDialog.ShowDialog() == true)
             {
                 Uri fileUri = new Uri(openDialog.FileName);
-                
+                loadedImage.Source = new BitmapImage(fileUri);
 
+                Canvas.SetTop(loadedImage, 200);
+                Canvas.SetLeft(loadedImage, 200);
+
+                ImageUpload imageUpload = new ImageUpload(new BitmapImage(fileUri));
+                imageUpload.Show();
             }
+
         }
 
         // Line creation and edition logic
@@ -296,6 +293,14 @@ namespace Paint
             }
 
             _currentLine = null;
+        }
+
+        public void uploadImage(BitmapImage bp)
+        {
+            Image uploaded = new Image();
+            uploaded.Source = bp;
+
+            paintSurface.Children.Add(uploaded);
         }
     }
 }

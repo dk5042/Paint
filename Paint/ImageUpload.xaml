@@ -1,0 +1,75 @@
+﻿<Window x:Class="Paint.ImageUpload"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Paint"
+        mc:Ignorable="d"
+        Title="ImageUpload" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Column="1" Margin="16" Name="ImageSpace"/>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <GroupBox Grid.Row="0" Header="Wybrane filtry" Margin="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <ComboBox Name="FilterSelection" Grid.Row="0" Height="25" Margin="8">
+                        <TextBlock Text="Sobel"/>
+                    </ComboBox>
+
+                    <Button Grid.Row="1" Content="Zastosuj filtr" Name="ApplyFilterButton" Height="25" Margin="8" Click="ApplyFilterButton_Click"/>
+
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Grid.Row="1" Header="Własne filtry" Margin="8">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <UniformGrid Grid.Row="0" Rows="3" Columns="3">
+
+                        <TextBox Margin="12" Name="Matrix11"/>
+                        <TextBox Margin="12" Name="Matrix12"/>
+                        <TextBox Margin="12" Name="Matrix13"/>
+
+                        <TextBox Margin="12" Name="Matrix21"/>
+                        <TextBox Margin="12" Name="Matrix22"/>
+                        <TextBox Margin="12" Name="Matrix23"/>
+
+                        <TextBox Margin="12" Name="Matrix31"/>
+                        <TextBox Margin="12" Name="Matrix32"/>
+                        <TextBox Margin="12" x:Name="Matrix33"/>
+
+                    </UniformGrid>
+
+                    <Button Grid.Row="1" Content="Zastosuj filtr" Name="MatrixFilter" Height="25" Margin="8" Click="MatrixFilter_Click"  />
+                </Grid>
+                
+            </GroupBox>
+
+            <Button x:Name="AddImageButton" Grid.Row="2" Height="50" Margin="16" Content="Wstaw obraz" Click="AddImageButton_Click"/>
+
+        </Grid>
+
+        
+    </Grid>
+</Window>
