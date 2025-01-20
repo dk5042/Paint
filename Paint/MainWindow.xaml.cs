@@ -28,9 +28,18 @@ namespace Paint
 
         public Color selectedColor = Color.FromRgb(0,0,0);
 
+        // for line drawing
         private Line _currentLine;
         private Ellipse _startHandle, _endHandle;
         private bool _isDraggingStart, _isDraggingEnd;
+
+        // for ellipse drawing
+        private Ellipse currentEllipse;
+        private Point startPoint;
+        private bool isDrawing = false;
+
+        // for rectangle drawing
+        private Rectangle currentRectangle;
 
         public MainWindow()
         {
@@ -50,6 +59,21 @@ namespace Paint
         private void btnLine_Click(object sender, RoutedEventArgs e)
         {
             drawStyle = 3;
+        }
+
+        private void btnEllipse_Click(object sender, RoutedEventArgs e)
+        {
+            drawStyle = 4;
+        }
+
+        private void btnRectangle_Click(object sender, RoutedEventArgs e)
+        {
+            drawStyle = 5;
+        }
+
+        private void drawCircle_Click(object sender, RoutedEventArgs e)
+        {
+            drawStyle = 6;
         }
 
         private void paintSurface_MouseMove(object sender, MouseEventArgs e)
@@ -87,6 +111,38 @@ namespace Paint
                             UpdateHandlePosition(_endHandle, currentPosition);
                             _currentLine.X2 = currentPosition.X;
                             _currentLine.Y2 = currentPosition.Y;
+                        }
+                        break;
+
+                    case 4:
+                        if (isDrawing && currentEllipse != null)
+                        {
+                            Point currentPoint = e.GetPosition(paintSurface);
+
+                            double width = Math.Abs(currentPoint.X - startPoint.X);
+                            double height = Math.Abs(currentPoint.Y - startPoint.Y);
+
+                            currentEllipse.Width = width;
+                            currentEllipse.Height = height;
+
+                            Canvas.SetLeft(currentEllipse, Math.Min(startPoint.X, currentPoint.X));
+                            Canvas.SetTop(currentEllipse, Math.Min(startPoint.Y, currentPoint.Y));
+                        }
+                        break;
+
+                    case 5:
+                        if (isDrawing && currentRectangle != null)
+                        {
+                            Point currentPoint = e.GetPosition(paintSurface);
+
+                            double width = Math.Abs(currentPoint.X - startPoint.X);
+                            double height = Math.Abs(currentPoint.Y - startPoint.Y);
+
+                            currentRectangle.Width = width;
+                            currentRectangle.Height = height;
+
+                            Canvas.SetLeft(currentRectangle, Math.Min(startPoint.X, currentPoint.X));
+                            Canvas.SetTop(currentRectangle, Math.Min(startPoint.Y, currentPoint.Y));
                         }
                         break;
                 }
@@ -152,6 +208,53 @@ namespace Paint
                         }
                         break;
 
+                    case 4:
+                        isDrawing = true;
+                        startPoint = e.GetPosition(paintSurface);
+
+                        currentEllipse = new Ellipse
+                        {
+                            Stroke = new SolidColorBrush(selectedColor),
+                            Fill = Brushes.Transparent // Optional: Change if you want filled ellipses
+                        };
+
+                        Canvas.SetLeft(currentEllipse, startPoint.X);
+                        Canvas.SetTop(currentEllipse, startPoint.Y);
+                        paintSurface.Children.Add(currentEllipse);
+                        break;
+
+                    case 5:
+                        isDrawing = true;
+                        startPoint = e.GetPosition(paintSurface);
+
+                        // Create a new Rectangle
+                        currentRectangle = new Rectangle
+                        {
+                            Stroke = new SolidColorBrush(selectedColor),
+                            Fill = Brushes.Transparent // Optional: Change for filled rectangles
+                        };
+
+                        Canvas.SetLeft(currentRectangle, startPoint.X);
+                        Canvas.SetTop(currentRectangle, startPoint.Y);
+                        paintSurface.Children.Add(currentRectangle);
+                        break;
+
+                    case 6:
+                        Ellipse circle = new Ellipse();
+
+                        circle.Width = 60;
+                        circle.Height = 60;
+
+                        Canvas.SetTop(circle, e.GetPosition(this).Y - circle.Height / 2);
+                        Canvas.SetLeft(circle, e.GetPosition(this).X - circle.Width / 2 - mainWindow.Width / 5);
+
+                        Brush brushColorCircle = new SolidColorBrush(selectedColor);
+                        circle.Stroke = brushColorCircle;
+
+                        paintSurface.Children.Add(circle);
+
+                        break;
+
                     case 7:
                         Rectangle rect = new Rectangle();
 
@@ -202,8 +305,29 @@ namespace Paint
 
         private void paintSurface_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _isDraggingStart = false;
-            _isDraggingEnd = false;
+            switch(drawStyle)
+            {
+                case 3:
+                    _isDraggingStart = false;
+                    _isDraggingEnd = false;
+                    break;
+
+                case 4:
+                    if (isDrawing)
+                    {
+                        isDrawing = false;
+                        currentEllipse = null;
+                    }
+                    break;
+
+                case 5:
+                    if (isDrawing)
+                    {
+                        isDrawing = false;
+                        currentRectangle = null;
+                    }
+                    break;
+            }
         }
 
         private void paintSurface_MouseDown(object sender, MouseButtonEventArgs e)
@@ -316,7 +440,7 @@ namespace Paint
                     encoder.Save(fileStream);
                 }
 
-                MessageBox.Show("Obraz zapisany!", "Save Image", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Obraz zapisany!", "Informacja o zapisie", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
         }
@@ -338,10 +462,10 @@ namespace Paint
             _currentLine = null;
         }
 
-        public void uploadImage(BitmapImage bp)
+        public void uploadImage(BitmapImage bitmapImage)
         {
             Image uploaded = new Image();
-            uploaded.Source = bp;
+            uploaded.Source = bitmapImage;
         }
     }
 }

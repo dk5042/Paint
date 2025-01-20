@@ -30,8 +30,10 @@
                         <Menu ToolBar.OverflowMode="Never" Background="AliceBlue">
                             <MenuItem Header="Rysuj">
                                 <MenuItem x:Name="btnDraw" Header="Dowolnie" Click="btnDraw_Click"/>
-                                <MenuItem x:Name="btnPoint" Header="Punkty" Click="btnPoint_Click"/>
-                                <MenuItem x:Name="btnLine" Header="Linie" Click="btnLine_Click"/>
+                                <MenuItem x:Name="btnPoint" Header="Punkt" Click="btnPoint_Click"/>
+                                <MenuItem x:Name="btnLine" Header="Linia" Click="btnLine_Click"/>
+                                <MenuItem x:Name="btnEllipse" Header="Elipsa" Click="btnEllipse_Click" />
+                                <MenuItem x:Name="btnRectangle" Header="Prostokąt" Click="btnRectangle_Click" />
                             </MenuItem>
                         </Menu>
                     </ToolBar>
@@ -39,7 +41,8 @@
                     <ToolBar ToolBarTray.IsLocked="True">
                         <Menu>
                             <MenuItem Header="Kształty" Background="AliceBlue">
-                                <MenuItem x:Name="drawRectangle" Header="Prostokąt" Click="drawRectangle_Click" />
+                                <MenuItem x:Name="drawCircle" Header="Koło" Click="drawCircle_Click" />
+                                <MenuItem x:Name="drawRectangle" Header="Kwadrat" Click="drawRectangle_Click" />
                                 <MenuItem x:Name="drawPolygon" Header="Wielokąt" Click="drawPolygon_Click" />
                             </MenuItem>
                         </Menu>
