@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Paint
@@ -32,35 +33,44 @@ namespace Paint
         {
             try
             {
-                float[,] filter = new float[3, 3];
-
-                filter[0, 0] = float.Parse(Matrix11.Text);
-                filter[0, 1] = float.Parse(Matrix12.Text);
-                filter[0, 2] = float.Parse(Matrix13.Text);
-
-                filter[1, 0] = float.Parse(Matrix21.Text);
-                filter[1, 1] = float.Parse(Matrix22.Text);
-                filter[1, 2] = float.Parse(Matrix23.Text);
-
-                filter[2, 0] = float.Parse(Matrix31.Text);
-                filter[2, 1] = float.Parse(Matrix32.Text);
-                filter[2, 2] = float.Parse(Matrix33.Text);
+                float[,] filter = new float[3, 3]
+                {
+                    { float.Parse(Matrix11.Text), float.Parse(Matrix12.Text), float.Parse(Matrix13.Text) },
+                    { float.Parse(Matrix21.Text), float.Parse(Matrix22.Text), float.Parse(Matrix23.Text) },
+                    { float.Parse(Matrix31.Text), float.Parse(Matrix32.Text), float.Parse(Matrix33.Text) }
+                };
 
                 Bitmap converted = BitmapImage2Bitmap(bitmapImage);
 
                 System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(0, 0, converted.Width, converted.Height);
-                BitmapData bmpData = converted.LockBits(rectangle, ImageLockMode.ReadWrite, converted.PixelFormat);
-                Image<Bgr, Byte> prefiltered = new Image<Bgr, Byte>(converted.Width, converted.Height, bmpData.Stride, bmpData.Scan0);
+                BitmapData bmpData = converted.LockBits(rectangle, ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-                ConvolutionKernelF kernel = new ConvolutionKernelF(filter);
-                Image<Bgr, float> filtered = prefiltered.Convolution(kernel);
-                Bitmap temp = filtered.ToBitmap();
-                bitmapImage = Bitmap2BitmapImage(temp);
+                try
+                {
+                    using (Image<Bgr, Byte> prefiltered = new Image<Bgr, Byte>(converted.Width, converted.Height, bmpData.Stride, bmpData.Scan0))
+                    {
+                        ConvolutionKernelF kernel = new ConvolutionKernelF(filter);
+                        using (Image<Bgr, float> filtered = prefiltered.Convolution(kernel))
+                        {
+                            using (Image<Bgr, Byte> normalized = filtered.Convert<Bgr, Byte>())
+                            {
+                                Bitmap temp = normalized.ToBitmap();
+                                bitmapImage = Bitmap2BitmapImage(temp);
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    converted.UnlockBits(bmpData);
+                }
+
                 ImageSpace.Source = bitmapImage;
+                ImageSpace.Stretch = Stretch.Uniform;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Wprowadzono nieprawidłowe dane.", "Wystąpił błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -99,17 +109,59 @@ namespace Paint
             Bitmap converted = BitmapImage2Bitmap(bitmapImage);
 
             System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(0, 0, converted.Width, converted.Height);
-            BitmapData bmpData = converted.LockBits(rectangle, ImageLockMode.ReadWrite, converted.PixelFormat);
+            BitmapData bmpData = converted.LockBits(rectangle, ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            if (FilterSelection.SelectedIndex == 0)
+            try
             {
-                Image<Bgr, Byte> sobelBip = new Image<Bgr, Byte>(converted.Width, converted.Height, bmpData.Stride, bmpData.Scan0);
-                Image<Bgr, float> sobel = sobelBip.Sobel(0, 1, 3);
+                if (FilterSelection.SelectedIndex == 0) // Sobel Filter
+                {
+                    using (Image<Bgr, Byte> sobelBip = new Image<Bgr, Byte>(converted.Width, converted.Height, bmpData.Stride, bmpData.Scan0))
+                    {
+                        using (Image<Bgr, float> sobel = sobelBip.Sobel(0, 1, 3))
+                        {
+                            Bitmap temp = sobel.ToBitmap();
+                            bitmapImage = Bitmap2BitmapImage(temp);
+                        }
+                    }
+                }
+                
+                else if (FilterSelection.SelectedIndex == 1) // Laplace Filter
+                {
+                    using (Image<Bgr, Byte> laplaceBip = new Image<Bgr, Byte>(converted.Width, converted.Height, bmpData.Stride, bmpData.Scan0))
+                    {
+                        using (Image<Gray, Byte> gray = laplaceBip.Convert<Gray, Byte>())
+                        {
 
-                Bitmap temp = sobel.ToBitmap();
-                bitmapImage = Bitmap2BitmapImage(temp);
-                ImageSpace.Source = bitmapImage;
+                            using (Image<Gray, float> laplace = gray.Laplace(3))
+                            {
+                                Bitmap temp = laplace.ToBitmap();
+                                bitmapImage = Bitmap2BitmapImage(temp);
+                            }
+                        }
+                    }
+                }
+
+                else if (FilterSelection.SelectedIndex == 2) // Gaussian Blur
+                {
+                    using (Image<Bgr, Byte> gaussBip = new Image<Bgr, Byte>(converted.Width, converted.Height, bmpData.Stride, bmpData.Scan0))
+                    {
+                        using (Image<Bgr, Byte> gauss = gaussBip.SmoothGaussian(5))
+                        {
+                            Bitmap temp = gauss.ToBitmap();
+                            bitmapImage = Bitmap2BitmapImage(temp);
+                        }
+                    }
+                }
             }
+            finally
+            {
+                converted.UnlockBits(bmpData);
+            }
+
+            ImageSpace.Source = bitmapImage;
+            ImageSpace.Stretch = Stretch.Uniform;
+
+
         }
     }
 }

@@ -60,7 +60,7 @@
                 </StackPanel>
             </ToolBarPanel>
 
-            <UniformGrid Grid.Row="1" Columns="4" Rows="4" Margin="8">
+            <UniformGrid Grid.Row="1" Columns="4" Rows="4" Margin="16">
                 <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
                     <Rectangle x:Name="color1" Margin="2" Fill="#000000" MouseLeftButtonDown="color_MouseLeftButtonDown" />
                 </Border>
