@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Color Picker" Height="350" Width="250">
+        Title="Wybór koloru" Height="350" Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -27,13 +27,13 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Content="R:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                    <Label Content="R: (0 - 255)" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
                     <TextBox x:Name="tbRValue" Grid.Row="0" Grid.Column="1" Width="50" Text="0" KeyDown="OnRGBColorValueChanged" PreviewMouseUp="SelectAllText" />
 
-                    <Label Content="G:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                    <Label Content="G: (0 - 255)" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
                     <TextBox x:Name="tbGValue" Grid.Row="1" Grid.Column="1" Width="50" Text="0" KeyDown="OnRGBColorValueChanged" PreviewMouseUp="SelectAllText" />
 
-                    <Label Content="B:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                    <Label Content="B: (0 - 255)" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
                     <TextBox x:Name="tbBValue" Grid.Row="2" Grid.Column="1" Width="50" Text="0" KeyDown="OnRGBColorValueChanged" PreviewMouseUp="SelectAllText" />
 
                 </Grid>
@@ -53,13 +53,13 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Content="H:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                    <Label Content="H: (0 - 360)" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
                     <TextBox x:Name="tbHValue" Grid.Row="0" Grid.Column="1" Width="50" Text="0" KeyDown="OnHSVColorValueChanged" PreviewMouseUp="SelectAllText" />
 
-                    <Label Content="S:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                    <Label Content="S: (0 - 100)" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
                     <TextBox x:Name="tbSValue" Grid.Row="1" Grid.Column="1" Width="50" Text="0" KeyDown="OnHSVColorValueChanged" PreviewMouseUp="SelectAllText" />
 
-                    <Label Content="V:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                    <Label Content="V: (0 - 100)" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
                     <TextBox x:Name="tbVValue" Grid.Row="2" Grid.Column="1" Width="50" Text="0" KeyDown="OnHSVColorValueChanged" PreviewMouseUp="SelectAllText" />
                 </Grid>
             </TabItem>
@@ -71,12 +71,14 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Rectangle x:Name="rectColorView" Grid.Column="0" Height="75" Width="75" Margin="0,24,0,24" Fill="Black" />
+            <Border Grid.Column="0" BorderThickness="2" Height="75" Width="75" Margin="0,24,0,24" Background="Black">
+                <Rectangle x:Name="rectColorView" Grid.Column="0" Height="75" Width="75" Margin="2" Fill="Black" />
+            </Border>
 
             <Button x:Name="btnUpdateColor" Grid.Column="1" Content="Sprawdź kolor" Height="40" Margin="12" Click="btnUpdateColor_Click" />
         </Grid>
 
-        <Button x:Name="btnPickColor" Grid.Row="2" Height="30" Content="Wybierz kolor" Click="btnPickColor_Click" />
+        <Button x:Name="btnPickColor" Grid.Row="2" Height="30" Margin="8" Content="Wybierz kolor" Click="btnPickColor_Click" />
         
     </Grid>
 </Window>

@@ -299,6 +299,55 @@ namespace Paint
                         paintSurface.Children.Add(poly);
 
                         break;
+
+                    case 9:
+                        // Create a Polygon for the Christmas tree
+                        Polygon tree = new Polygon();
+
+                        // Define the points for the tree's triangular layers (adjusted for better positioning)
+                        tree.Points = new PointCollection
+                        {
+                            // Top layer of the tree
+                            new Point(30, 0),          // Top of the tree (apex)
+                            new Point(0, 50),          // Left bottom of the first layer
+                            new Point(60, 50),         // Right bottom of the first layer
+
+                            // Middle layer of the tree
+                            new Point(15, 25),         // Left top of the second layer
+                            new Point(45, 25),         // Right top of the second layer
+                            new Point(30, 50),         // Bottom of the second layer
+
+                            // Bottom layer of the tree
+                            new Point(5, 40),          // Left bottom of the base layer
+                            new Point(55, 40),         // Right bottom of the base layer
+                            new Point(30, 70),         // Bottom of the base layer
+                        };
+
+                        // Set the tree's stroke and fill color
+                        Brush treeColor = new SolidColorBrush(Colors.Green); // Green for tree
+                        tree.Fill = treeColor;
+                        tree.Stroke = Brushes.Black; // Optional: outline the tree
+
+                        // Position the tree at the cursor, adjusting for better alignment
+                        Canvas.SetTop(tree, e.GetPosition(this).Y - 70); // Position tree with respect to the bottom-most layer
+                        Canvas.SetLeft(tree, e.GetPosition(this).X - 30 - mainWindow.Width / 5); // Adjust tree width
+
+                        // Add the tree to the canvas
+                        paintSurface.Children.Add(tree);
+
+                        // Add a trunk below the tree
+                        Rectangle trunk = new Rectangle();
+                        trunk.Width = 20;
+                        trunk.Height = 30;
+                        Brush trunkColor = new SolidColorBrush(Colors.Brown);
+                        trunk.Fill = trunkColor;
+
+                        // Position the trunk just below the tree base (aligned with the tree's bottom center)
+                        Canvas.SetTop(trunk, e.GetPosition(this).Y - 10);  // Adjust trunk's vertical position below the tree
+                        Canvas.SetLeft(trunk, e.GetPosition(this).X - 10 - mainWindow.Width / 5); // Align trunk horizontally under tree
+
+                        paintSurface.Children.Add(trunk);
+                        break;
                 }
             }
         }
@@ -343,6 +392,11 @@ namespace Paint
         private void drawPolygon_Click(object sender, RoutedEventArgs e)
         {
             drawStyle = 8;
+        }
+
+        private void drawTree_Click(object sender, RoutedEventArgs e)
+        {
+            drawStyle = 9;
         }
 
         private void colorPicker_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -497,6 +551,135 @@ namespace Paint
 
             // Add the image container to the canvas
             paintSurface.Children.Add(uploaded);
+        }
+        private void DrawChristmasTree()
+        {
+            DrawTree(0, 0, 150, 300);
+            DrawBauble(380, 300, 20, Brushes.Red);
+            DrawBauble(420, 250, 20, Brushes.Blue);
+            // Możesz dodać więcej bąbków według potrzeb
+        }
+
+        private void color_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Rectangle rectangle = sender as Rectangle;
+
+            if (rectangle != null)
+            {
+                switch (rectangle.Name)
+                {
+                    case "color1":
+                        selectedColor = Color.FromRgb(0, 0, 0);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color2":
+                        selectedColor = Color.FromRgb(255, 0, 0);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color3":
+                        selectedColor = Color.FromRgb(0, 128, 0);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color4":
+                        selectedColor = Color.FromRgb(0, 0, 255);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color5":
+                        selectedColor = Color.FromRgb(153, 153, 153);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color6":
+                        selectedColor = Color.FromRgb(128, 0, 0);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color7":
+                        selectedColor = Color.FromRgb(0, 102, 102);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color8":
+                        selectedColor = Color.FromRgb(0, 0, 128);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color9":
+                        selectedColor = Color.FromRgb(204, 204, 204);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color10":
+                        selectedColor = Color.FromRgb(128, 0, 128);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color11":
+                        selectedColor = Color.FromRgb(0, 255, 0);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color12":
+                        selectedColor = Color.FromRgb(0, 255, 255);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color13":
+                        selectedColor = Color.FromRgb(255, 255, 255);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color14":
+                        selectedColor = Color.FromRgb(255, 0, 255);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color15":
+                        selectedColor = Color.FromRgb(255, 255, 0);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                    case "color16":
+                        selectedColor = Color.FromRgb(128, 128, 0);
+                        colorPicker.Fill = new SolidColorBrush(selectedColor);
+                        break;
+
+                }
+            }
+        }
+
+        private void DrawTree(double x, double y, double width, double height)
+        {
+            var tree = new Polygon
+            {
+                Fill = Brushes.Green,
+                Stroke = Brushes.DarkGreen,
+                StrokeThickness = 2,
+                Points = new PointCollection
+                {
+                    new Point(x, y),
+                    new Point(x - width / 2, y + height),
+                    new Point(x + width / 2, y + height)
+                }
+            };
+            paintSurface.Children.Add(tree);
+        }
+
+        private void DrawBauble(double x, double y, double radius, Brush color)
+        {
+            var bauble = new Ellipse
+            {
+                Width = radius,
+                Height = radius,
+                Fill = color
+            };
+            Canvas.SetLeft(bauble, x - radius / 2);
+            Canvas.SetTop(bauble, y - radius / 2);
+            paintSurface.Children.Add(bauble);
         }
     }
 }

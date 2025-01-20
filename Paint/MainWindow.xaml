@@ -10,7 +10,7 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -20,7 +20,8 @@
         <Grid Grid.Column="0">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -44,6 +45,7 @@
                                 <MenuItem x:Name="drawCircle" Header="Koło" Click="drawCircle_Click" />
                                 <MenuItem x:Name="drawRectangle" Header="Kwadrat" Click="drawRectangle_Click" />
                                 <MenuItem x:Name="drawPolygon" Header="Wielokąt" Click="drawPolygon_Click" />
+                                <MenuItem x:Name="drawTree" Header="Choinka" Click="drawTree_Click" />
                             </MenuItem>
                         </Menu>
                     </ToolBar>
@@ -53,12 +55,69 @@
                     </ToolBar>
 
                     <ToolBar ToolBarTray.IsLocked="True">
-                        <Button x:Name="btnSaveToPng" Content="Zapisz obraz do png" Click="btnSaveToPng_Click" />
+                        <Button x:Name="btnSaveToPng" Content="Zapisz obraz" Click="btnSaveToPng_Click" />
                     </ToolBar>
                 </StackPanel>
             </ToolBarPanel>
 
-            <Rectangle x:Name="colorPicker" Grid.Row="1" Height="20" Width="20" Margin="2" Fill="Black" MouseLeftButtonDown="colorPicker_MouseLeftButtonDown" />
+            <UniformGrid Grid.Row="1" Columns="4" Rows="4" Margin="8">
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color1" Margin="2" Fill="#000000" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color2" Margin="2" Fill="#FF0000" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color3" Margin="2" Fill="#009900" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color4" Margin="2" Fill="#0000FF" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color5" Margin="2" Fill="#808080" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color6" Margin="2" Fill="#990000" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color7" Margin="2" Fill="#006666" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color8" Margin="2" Fill="#000080" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color9" Margin="2" Fill="#c0c0c0" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color10" Margin="2,0,2,2" Fill="#800080" MouseLeftButtonDown="color_MouseLeftButtonDown" Height="14" VerticalAlignment="Bottom" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color11" Margin="2" Fill="#00FF00" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color12" Margin="2" Fill="#00ffff" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color13" Margin="2" Fill="White" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color14" Margin="2" Fill="#ff00ff" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color15" Margin="2" Fill="#ffff00" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+                <Border Grid.Row="2" Height="20" Width="20" BorderThickness="1" Background="Black">
+                    <Rectangle x:Name="color16" Margin="2" Fill="#808000" MouseLeftButtonDown="color_MouseLeftButtonDown" />
+                </Border>
+            </UniformGrid>
+
+            <Border Grid.Row="2" Height="50" Width="50" BorderThickness="1" Background="Black">
+                <Rectangle x:Name="colorPicker" Height="50" Width="50" Margin="2" Fill="Black" MouseLeftButtonDown="colorPicker_MouseLeftButtonDown" />
+            </Border>
+
         </Grid>
 
         <Grid Grid.Column="1">
@@ -69,13 +128,13 @@
                 MouseLeftButtonDown="paintSurface_MouseLeftButtonDown"
                 MouseMove="paintSurface_MouseMove" 
                 MouseLeftButtonUp="paintSurface_MouseLeftButtonUp">
-                
+
                 <Canvas.Background>
                     <SolidColorBrush Opacity="1" Color="#F0F0F0" />
                 </Canvas.Background>
             </Canvas>
 
-            
+
         </Grid>
     </Grid>
 </Window>
