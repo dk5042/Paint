@@ -623,6 +623,19 @@ namespace Paint
             }
         }
 
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            // Ensure there are children in the canvas
+            if (paintSurface.Children.Count > 0)
+            {
+                // Get the last child element
+                var lastChild = paintSurface.Children[paintSurface.Children.Count - 1];
+
+                // Remove the last child
+                paintSurface.Children.Remove(lastChild);
+            }
+        }
+
         private void DrawTree(double x, double y, double width, double height)
         {
             var tree = new Polygon
