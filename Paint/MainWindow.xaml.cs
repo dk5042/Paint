@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -246,8 +247,6 @@ namespace Paint
 
         }
 
-        // Line creation and edition logic
-
         private Ellipse CreateHandle(Point position)
         {
             var handle = new Ellipse
@@ -278,6 +277,50 @@ namespace Paint
                    mousePosition.Y <= top + handle.Height;
         }
 
+        private void btnSaveToPng_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg",
+                DefaultExt = "png",
+                AddExtension = true
+            };
+
+            bool? result = saveFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = saveFileDialog.FileName;
+                BitmapEncoder encoder;
+
+                if (System.IO.Path.GetExtension(filename).ToLower() == ".jpg")
+                {
+                    encoder = new JpegBitmapEncoder();
+                }
+                else
+                {
+                    encoder = new PngBitmapEncoder();
+                }
+
+                paintSurface.Measure(new Size(paintSurface.ActualWidth, paintSurface.ActualHeight));
+                paintSurface.Arrange(new Rect(new Size(paintSurface.ActualWidth, paintSurface.ActualHeight)));
+
+                RenderTargetBitmap renderBitmap = new RenderTargetBitmap(
+                    (int)paintSurface.ActualWidth, (int)paintSurface.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+
+                renderBitmap.Render(paintSurface);
+
+                using (FileStream fileStream = new FileStream(filename, FileMode.Create))
+                {
+                    encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+                    encoder.Save(fileStream);
+                }
+
+                MessageBox.Show("Obraz zapisany!", "Save Image", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+        }
+
         private void FinalizeLine()
         {
             if (_startHandle != null)
@@ -299,8 +342,6 @@ namespace Paint
         {
             Image uploaded = new Image();
             uploaded.Source = bp;
-
-            paintSurface.Children.Add(uploaded);
         }
     }
 }

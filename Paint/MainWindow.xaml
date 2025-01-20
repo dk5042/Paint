@@ -48,6 +48,10 @@
                     <ToolBar ToolBarTray.IsLocked="True">
                         <Button x:Name="btnLoadImage" Click="btnLoadImage_Click">Wstaw obraz</Button>
                     </ToolBar>
+
+                    <ToolBar ToolBarTray.IsLocked="True">
+                        <Button x:Name="btnSaveToPng" Content="Zapisz obraz do png" Click="btnSaveToPng_Click" />
+                    </ToolBar>
                 </StackPanel>
             </ToolBarPanel>
 
