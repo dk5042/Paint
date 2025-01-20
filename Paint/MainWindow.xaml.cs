@@ -1,18 +1,11 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Paint
@@ -301,52 +294,35 @@ namespace Paint
                         break;
 
                     case 9:
-                        // Create a Polygon for the Christmas tree
                         Polygon tree = new Polygon();
-
-                        // Define the points for the tree's triangular layers (adjusted for better positioning)
-                        tree.Points = new PointCollection
+                        tree.Points = new PointCollection()
                         {
-                            // Top layer of the tree
-                            new Point(30, 0),          // Top of the tree (apex)
-                            new Point(0, 50),          // Left bottom of the first layer
-                            new Point(60, 50),         // Right bottom of the first layer
-
-                            // Middle layer of the tree
-                            new Point(15, 25),         // Left top of the second layer
-                            new Point(45, 25),         // Right top of the second layer
-                            new Point(30, 50),         // Bottom of the second layer
-
-                            // Bottom layer of the tree
-                            new Point(5, 40),          // Left bottom of the base layer
-                            new Point(55, 40),         // Right bottom of the base layer
-                            new Point(30, 70),         // Bottom of the base layer
+                            new Point(0, -60),
+                            new Point(60, 60),
+                            new Point(-60, 60)
                         };
 
-                        // Set the tree's stroke and fill color
-                        Brush treeColor = new SolidColorBrush(Colors.Green); // Green for tree
-                        tree.Fill = treeColor;
-                        tree.Stroke = Brushes.Black; // Optional: outline the tree
+                        tree.Fill = new SolidColorBrush(Colors.Green);
 
-                        // Position the tree at the cursor, adjusting for better alignment
-                        Canvas.SetTop(tree, e.GetPosition(this).Y - 70); // Position tree with respect to the bottom-most layer
-                        Canvas.SetLeft(tree, e.GetPosition(this).X - 30 - mainWindow.Width / 5); // Adjust tree width
+                        double treeWidth = 120;
 
-                        // Add the tree to the canvas
+                        double treeTopY = e.GetPosition(this).Y - 60 - 20;
+                        Canvas.SetTop(tree, treeTopY);
+
+                        Canvas.SetLeft(tree, e.GetPosition(this).X - treeWidth / 2 - mainWindow.Width / 5);
+
                         paintSurface.Children.Add(tree);
 
-                        // Add a trunk below the tree
                         Rectangle trunk = new Rectangle();
                         trunk.Width = 20;
-                        trunk.Height = 30;
-                        Brush trunkColor = new SolidColorBrush(Colors.Brown);
-                        trunk.Fill = trunkColor;
+                        trunk.Height = 60;
+                        trunk.Fill = new SolidColorBrush(Colors.Brown);
 
-                        // Position the trunk just below the tree base (aligned with the tree's bottom center)
-                        Canvas.SetTop(trunk, e.GetPosition(this).Y - 10);  // Adjust trunk's vertical position below the tree
-                        Canvas.SetLeft(trunk, e.GetPosition(this).X - 10 - mainWindow.Width / 5); // Align trunk horizontally under tree
+                        Canvas.SetTop(trunk, e.GetPosition(this).Y - 20);
+                        Canvas.SetLeft(trunk, e.GetPosition(this).X - trunk.Width / 2 - mainWindow.Width / 5 - 60);
 
                         paintSurface.Children.Add(trunk);
+
                         break;
                 }
             }
