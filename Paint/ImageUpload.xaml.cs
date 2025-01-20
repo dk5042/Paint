@@ -70,7 +70,7 @@ namespace Paint
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Nie wpisano poprawnie liczb", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
