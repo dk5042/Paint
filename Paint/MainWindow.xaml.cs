@@ -355,11 +355,6 @@ namespace Paint
             }
         }
 
-        private void paintSurface_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-           
-        }
-
         private void drawRectangle_Click(object sender, RoutedEventArgs e)
         {
             drawStyle = 7;

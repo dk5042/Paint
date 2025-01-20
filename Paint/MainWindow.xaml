@@ -124,7 +124,6 @@
             <Canvas
                 Name="paintSurface"
                 ClipToBounds="True"
-                MouseDown="paintSurface_MouseDown"
                 MouseLeftButtonDown="paintSurface_MouseLeftButtonDown"
                 MouseMove="paintSurface_MouseMove" 
                 MouseLeftButtonUp="paintSurface_MouseLeftButtonUp">
