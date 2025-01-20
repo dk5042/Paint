@@ -42,7 +42,7 @@ namespace Paint
 
                 Bitmap converted = BitmapImage2Bitmap(bitmapImage);
 
-                System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(0, 0, converted.Width, converted.Height);
+                Rectangle rectangle = new Rectangle(0, 0, converted.Width, converted.Height);
                 BitmapData bmpData = converted.LockBits(rectangle, ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
                 try
@@ -68,7 +68,7 @@ namespace Paint
                 ImageSpace.Source = bitmapImage;
                 ImageSpace.Stretch = Stretch.Uniform;
             }
-            catch (Exception ex)
+            catch
             {
                 MessageBox.Show($"Nie wpisano poprawnie liczb", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -90,7 +90,7 @@ namespace Paint
         {
             using (MemoryStream memory = new MemoryStream())
             {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                bitmap.Save(memory, ImageFormat.Bmp);
                 memory.Position = 0;
 
                 BitmapImage bitmapImage = new BitmapImage();
@@ -160,8 +160,6 @@ namespace Paint
 
             ImageSpace.Source = bitmapImage;
             ImageSpace.Stretch = Stretch.Uniform;
-
-
         }
     }
 }
