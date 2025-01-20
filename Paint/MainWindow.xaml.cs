@@ -464,8 +464,39 @@ namespace Paint
 
         public void uploadImage(BitmapImage bitmapImage)
         {
-            Image uploaded = new Image();
-            uploaded.Source = bitmapImage;
+            // Create a new Image control
+            Image uploaded = new Image
+            {
+                Source = bitmapImage
+            };
+
+            // Resizing the image for canvas not to be cut off the screen
+            double canvasWidth = paintSurface.ActualWidth;
+            double canvasHeight = paintSurface.ActualHeight;
+
+            double imageAspect = bitmapImage.Width / bitmapImage.Height;
+            double canvasAspect = canvasWidth / canvasHeight;
+
+            double imageWidth, imageHeight;
+            if (imageAspect > canvasAspect)
+            {
+                imageWidth = canvasWidth;
+                imageHeight = canvasWidth / imageAspect;
+            }
+            else
+            {
+                imageHeight = canvasHeight;
+                imageWidth = canvasHeight * imageAspect;
+            }
+
+            uploaded.Width = imageWidth;
+            uploaded.Height = imageHeight;
+
+            Canvas.SetLeft(uploaded, (canvasWidth - imageWidth) / 2);
+            Canvas.SetTop(uploaded, (canvasHeight - imageHeight) / 2);
+
+            // Add the image container to the canvas
+            paintSurface.Children.Add(uploaded);
         }
     }
 }
