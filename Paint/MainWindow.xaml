@@ -126,7 +126,7 @@
 
         <Grid Grid.Column="1">
             <Canvas
-                Name="paintSurface"
+                x:Name="paintSurface"
                 ClipToBounds="True"
                 MouseLeftButtonDown="paintSurface_MouseLeftButtonDown"
                 MouseMove="paintSurface_MouseMove" 
