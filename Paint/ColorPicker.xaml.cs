@@ -171,8 +171,8 @@ namespace Paint
                 try
                 {
                     double h = double.Parse(tbHValue.Text);
-                    double s = double.Parse(tbSValue.Text);
-                    double v = double.Parse(tbVValue.Text);
+                    double s = double.Parse(tbSValue.Text) / 100;
+                    double v = double.Parse(tbVValue.Text) / 100;
 
                     (byte r, byte g, byte b) = ConvertHsvToRgb(h, s, v);
 
