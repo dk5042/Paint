@@ -138,6 +138,18 @@ namespace Paint
                             Canvas.SetTop(currentRectangle, Math.Min(startPoint.Y, currentPoint.Y));
                         }
                         break;
+
+                    case 10:
+                        var clickedElement = e.Source as FrameworkElement;
+
+                        if (clickedElement != null)
+                        {
+                            if (paintSurface.Children.Contains(clickedElement))
+                            {
+                                paintSurface.Children.Remove(clickedElement);
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -324,6 +336,18 @@ namespace Paint
                         paintSurface.Children.Add(trunk);
 
                         break;
+
+                    case 10:
+                        var clickedElement = e.Source as FrameworkElement;
+
+                        if (clickedElement != null)
+                        {
+                            if (paintSurface.Children.Contains(clickedElement))
+                            {
+                                paintSurface.Children.Remove(clickedElement);
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -368,6 +392,11 @@ namespace Paint
         private void drawTree_Click(object sender, RoutedEventArgs e)
         {
             drawStyle = 9;
+        }
+
+        private void btnEraser_Click(object sender, RoutedEventArgs e)
+        {
+            drawStyle = 10;
         }
 
         private void colorPicker_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

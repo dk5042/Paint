@@ -59,6 +59,10 @@
                     </ToolBar>
 
                     <ToolBar ToolBarTray.IsLocked="True">
+                        <Button x:Name="btnEraser" Content="Gumka" Click="btnEraser_Click" />
+                    </ToolBar>
+
+                    <ToolBar ToolBarTray.IsLocked="True">
                         <Button x:Name="btnBack" Content="Cofnij" Click="btnBack_Click" />
                     </ToolBar>
                 </StackPanel>
