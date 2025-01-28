@@ -552,13 +552,6 @@ namespace Paint
             // Add the image container to the canvas
             paintSurface.Children.Add(uploaded);
         }
-        private void DrawChristmasTree()
-        {
-            DrawTree(0, 0, 150, 300);
-            DrawBauble(380, 300, 20, Brushes.Red);
-            DrawBauble(420, 250, 20, Brushes.Blue);
-            // Możesz dodać więcej bąbków według potrzeb
-        }
 
         private void color_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -663,36 +656,6 @@ namespace Paint
                 // Remove the last child
                 paintSurface.Children.Remove(lastChild);
             }
-        }
-
-        private void DrawTree(double x, double y, double width, double height)
-        {
-            var tree = new Polygon
-            {
-                Fill = Brushes.Green,
-                Stroke = Brushes.DarkGreen,
-                StrokeThickness = 2,
-                Points = new PointCollection
-                {
-                    new Point(x, y),
-                    new Point(x - width / 2, y + height),
-                    new Point(x + width / 2, y + height)
-                }
-            };
-            paintSurface.Children.Add(tree);
-        }
-
-        private void DrawBauble(double x, double y, double radius, Brush color)
-        {
-            var bauble = new Ellipse
-            {
-                Width = radius,
-                Height = radius,
-                Fill = color
-            };
-            Canvas.SetLeft(bauble, x - radius / 2);
-            Canvas.SetTop(bauble, y - radius / 2);
-            paintSurface.Children.Add(bauble);
         }
     }
 }
